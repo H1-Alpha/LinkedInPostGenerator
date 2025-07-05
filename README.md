@@ -1,8 +1,3 @@
-Here's a professional, clear, and scalable `README.md` for your **LinkedIn Post Generator SaaS** built with **Next.js, TypeScript, Supabase, Cohere, and Tailwind CSS** — perfect for sharing on GitHub or pitching to collaborators.
-
----
-
-````markdown
 # 🧠 LinkedIn Post Generator
 
 A simple AI-powered SaaS that generates high-quality, LinkedIn-ready posts based on a topic and tone of your choice — powered by **Cohere AI**, **Supabase Auth**, and **Next.js**.
@@ -162,4 +157,3 @@ Would you like me to:
 - Turn this into a `README.md` file you can paste directly?
 
 Let’s make this repo stand out to investors, clients, and employers. 💼🔥
-```
