@@ -35,7 +35,7 @@ A simple AI-powered SaaS that generates high-quality, LinkedIn-ready posts based
 git clone https://github.com/your-username/linkedin-post-generator.git
 cd linkedin-post-generator
 ```
-````
+
 
 ### 2. Install Dependencies
 
@@ -148,9 +148,6 @@ This project is MIT licensed.
 Feel free to open issues or PRs — feedback & collaboration are welcome!
 
 ```
-
----
-
 Would you like me to:
 - Auto-generate the schema for the `posts` table?
 - Add badges or markdown visuals?
