@@ -1,3 +1,5 @@
+
+
 interface GeneratePostParams {
   tone: string;
   targetReaction: string;
@@ -5,6 +7,7 @@ interface GeneratePostParams {
   targetAudience: string;
   content?: string;
 }
+
 
 export const generateLinkedInPost = async (params: GeneratePostParams): Promise<string> => {
   const { tone, targetReaction, topic, targetAudience, content } = params;
@@ -21,24 +24,18 @@ export const generateLinkedInPost = async (params: GeneratePostParams): Promise<
     prompt += `\n\nExisting content/key points to consider:\n${content}`;
   }
 
-  prompt += `\n\nPlease generate a professional LinkedIn post that follows these guidelines and is tailored for the specified target audience.`;
+  prompt += `\n\nPlease generate a professional LinkedIn post that follows these guidelines and is tailored for the specified target audience.
+   Avoid mentioning the tone, target reaction, target audience. Make sure to generate a post that is relevant to the topic and target audience. Display in text format, avoid using bold, italic, or any other formatting.
+   Include hashtags, emojis in the post.`;
 
   try {
-    // Replace this with your actual Cohere API call
-    // For now, we'll simulate the API call
+    // Use the API route to call Cohere
     const response = await fetch('/api/generate-post', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        prompt,
-        tone,
-        targetReaction,
-        topic,
-        targetAudience,
-        content
-      }),
+      body: JSON.stringify({ prompt }),
     });
 
     if (!response.ok) {

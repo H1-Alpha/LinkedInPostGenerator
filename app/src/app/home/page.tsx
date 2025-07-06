@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import PostGenerator from "../components/PostGenerator";
 import supabase from "../lib/supabaseClient";
 
-const HomePage = () => {
+interface HomePageProps {
+	onLogout?: () => void;
+}
+
+const HomePage = ({ onLogout }: HomePageProps) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -87,7 +91,7 @@ const HomePage = () => {
 		);
 	}
 
-	if (user) return <PostGenerator user={user} />;
+	if (user) return <PostGenerator user={user} onLogout={onLogout} />;
 
 	return (
 		<div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">

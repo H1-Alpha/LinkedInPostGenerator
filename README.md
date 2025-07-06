@@ -132,8 +132,7 @@ Visit: [http://localhost:3000](http://localhost:3000)
 ## 👨‍💻 Author
 
 **Harith Abeysinghe**
-FinTech-focused software engineer & SaaS builder 🚀
-[LinkedIn](https://www.linkedin.com/in/harithabeysinghe)
+[LinkedIn](https://www.linkedin.com/in/harith-abeysinghe)
 
 ---
 
