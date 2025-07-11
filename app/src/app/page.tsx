@@ -33,9 +33,10 @@ export default function Home() {
 		return () => subscription.unsubscribe();
 	}, []);
 
+	// Redirect to welcome page if no user is logged in
 	useEffect(() => {
 		if (!loading && !user) {
-			router.push("/signup");
+			router.push("/welcome");
 		}
 	}, [user, loading, router]);
 
