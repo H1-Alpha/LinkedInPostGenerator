@@ -26,7 +26,7 @@ const Login = () => {
 			setErrorMsg(error.message);
 		} else {
 			// Redirect to home page after successful login
-			router.push('/');
+			router.push("/post-generator");
 		}
 
 		setLoading(false);
@@ -62,7 +62,10 @@ const Login = () => {
 				<div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 border border-gray-200 dark:border-gray-700">
 					<form onSubmit={handleLoginWithPassword} className="space-y-4">
 						<div>
-							<label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+							<label
+								htmlFor="email"
+								className="block text-sm font-medium text-foreground mb-2"
+							>
 								Email
 							</label>
 							<input
@@ -78,7 +81,10 @@ const Login = () => {
 						</div>
 
 						<div>
-							<label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
+							<label
+								htmlFor="password"
+								className="block text-sm font-medium text-foreground mb-2"
+							>
 								Password
 							</label>
 							<input
@@ -131,8 +137,8 @@ const Login = () => {
 						<div className="text-center">
 							<p className="text-sm text-gray-600 dark:text-gray-400">
 								Don't have an account?{" "}
-								<Link 
-									href="/signup" 
+								<Link
+									href="/signup"
 									className="text-blue-600 hover:text-blue-500 font-medium"
 								>
 									Sign up here
@@ -146,4 +152,4 @@ const Login = () => {
 	);
 };
 
-export default Login; 
+export default Login;

@@ -40,13 +40,6 @@ export default function Home() {
 		}
 	}, [user, loading, router]);
 
-	const handleLogout = async () => {
-		const { error } = await supabase.auth.signOut();
-		if (error) {
-			console.error("Error logging out:", error);
-		}
-	};
-
 	if (loading) {
 		return (
 			<div className="min-h-screen bg-background flex items-center justify-center">
@@ -57,9 +50,5 @@ export default function Home() {
 
 	if (!user) return null;
 
-	return (
-		<div className="h-screen bg-background text-foreground font-sans">
-			<HomePage onLogout={handleLogout} />
-		</div>
-	);
+	return router.push("/post-generator");
 }
