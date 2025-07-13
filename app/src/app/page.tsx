@@ -3,7 +3,6 @@
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import HomePage from "./home/page";
 import supabase from "./lib/supabaseClient";
 
 export default function Home() {

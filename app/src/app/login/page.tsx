@@ -25,7 +25,7 @@ const Login = () => {
 		if (error) {
 			setErrorMsg(error.message);
 		} else {
-			// Redirect to home page after successful login
+			// Redirect to post-generator page after successful login
 			router.push("/post-generator");
 		}
 
