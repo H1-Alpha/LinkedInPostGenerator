@@ -10,7 +10,6 @@ export const generateLinkedInPost = async (
 	params: GeneratePostParams
 ): Promise<string> => {
 	const { tone, target_reaction, topic, target_audience, content } = params;
-	console.log("Generating LinkedIn post with params:", params);
 	// Construct the prompt based on the parameters
 	let prompt = `Generate a LinkedIn post with the following specifications:
 - Tone: ${tone}
@@ -18,7 +17,6 @@ export const generateLinkedInPost = async (
 - Topic: ${topic}
 - Target Audience: ${target_audience}`;
 
-	console.log("Prompt for Cohere:", prompt);
 	// If there's existing content, include it as context
 	if (content && content.trim()) {
 		prompt += `\n\nExisting content/key points to consider:\n${content}`;

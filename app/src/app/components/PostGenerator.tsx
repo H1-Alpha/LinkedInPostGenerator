@@ -1,6 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { set } from "cohere-ai/core/schemas";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { generateLinkedInPost } from "../lib/cohereClient";
 import SideMenu from "./SideMenu";
 
@@ -44,8 +43,6 @@ const PostGenerator: React.FC<PostGeneratorProps> = ({ user, onLogout }) => {
 				content: content.trim() || undefined, // Only pass if there's content
 			});
 
-			console.log("generatedText", generatedText);
-
 			if (selectedPostId === undefined) {
 				// Create new post
 				const newPost: GeneratedPost = {
@@ -57,9 +54,6 @@ const PostGenerator: React.FC<PostGeneratorProps> = ({ user, onLogout }) => {
 					target_audience: target_audience,
 					target_reaction: target_reaction,
 				};
-
-				// console.log("newPost", newPost);
-				// console.log("user", user);
 
 				// Save to database
 				try {
@@ -99,7 +93,6 @@ const PostGenerator: React.FC<PostGeneratorProps> = ({ user, onLogout }) => {
 				// Replace the content with the generated text
 				setContent(generatedText);
 			} else {
-				console.log("Updating existing post with ID:", selectedPostId);
 				// Update existing post
 				const updatedPost: GeneratedPost = {
 					id: selectedPostId,
