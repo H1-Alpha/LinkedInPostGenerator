@@ -5,8 +5,10 @@ interface GeneratedPost {
 	id: string;
 	tone: string;
 	topic: string;
-	timestamp: Date;
+	created_at: Date;
 	content: string;
+	target_audience: string;
+	target_reaction: string;
 }
 
 interface SideMenuProps {
@@ -21,11 +23,11 @@ interface SideMenuProps {
 const SideMenu: React.FC<SideMenuProps> = ({
 	user,
 	onLogout,
-	generatedPosts,
 	onSelectPost,
 	onDeletePost,
 	selectedPostId,
 }) => {
+	const [posts, setPosts] = useState<GeneratedPost[]>([]);
 	const getAllPosts = async (user_id: string): Promise<GeneratedPost[]> => {
 		try {
 			const res = await fetch(
@@ -38,14 +40,12 @@ const SideMenu: React.FC<SideMenuProps> = ({
 
 			const result = await res.json();
 
-			console.log(result);
-
-			const generatedPosts = result.posts.map((post: any) => ({
+			const posts = result.posts.map((post: any) => ({
 				...post,
-				timestamp: new Date(post.timestamp),
+				created_at: new Date(post.created_at),
 			}));
 
-			return generatedPosts;
+			return posts;
 		} catch (error) {
 			console.error("Error getting posts:", error);
 			return [];
@@ -54,12 +54,11 @@ const SideMenu: React.FC<SideMenuProps> = ({
 
 	useEffect(() => {
 		if (user) {
-			console.log("Fetching posts for user:", user.id);
 			getAllPosts(user.id).then((posts) => {
-				generatedPosts = posts;
+				setPosts(posts);
 			});
 		}
-	}, []);
+	}, [user]);
 
 	return (
 		<div className="w-80 h-screen bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col">
@@ -77,7 +76,7 @@ const SideMenu: React.FC<SideMenuProps> = ({
 						Generated Posts
 					</h2>
 
-					{generatedPosts.length === 0 ? (
+					{posts.length === 0 ? (
 						<div className="text-center py-8">
 							<p className="text-sm text-gray-500 dark:text-gray-400">
 								No posts generated yet
@@ -88,7 +87,7 @@ const SideMenu: React.FC<SideMenuProps> = ({
 						</div>
 					) : (
 						<div className="space-y-2">
-							{generatedPosts.map((post) => (
+							{posts.map((post) => (
 								<div
 									key={post.id}
 									className={`group relative p-3 rounded-lg transition-colors ${
@@ -105,8 +104,8 @@ const SideMenu: React.FC<SideMenuProps> = ({
 											{post.topic}
 										</div>
 										<div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-											{post.timestamp.toLocaleDateString()}{" "}
-											{post.timestamp.toLocaleTimeString([], {
+											{post.created_at.toLocaleDateString()}{" "}
+											{post.created_at.toLocaleTimeString([], {
 												hour: "2-digit",
 												minute: "2-digit",
 											})}

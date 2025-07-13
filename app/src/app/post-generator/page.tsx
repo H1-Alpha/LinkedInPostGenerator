@@ -5,7 +5,6 @@ import supabase from "@/app/lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import HomePage from "../home/page";
 
 const PostGeneratorPage = () => {
 	const [user, setUser] = useState<User | null>(null);
@@ -55,7 +54,6 @@ const PostGeneratorPage = () => {
 	return (
 		<div className="h-screen bg-background text-foreground font-sans">
 			<PostGenerator user={user} onLogout={handleLogout} />
-			{/* <HomePage onLogout={handleLogout} /> */}
 		</div>
 	);
 };

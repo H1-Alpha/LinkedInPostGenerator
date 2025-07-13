@@ -51,7 +51,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const { tone, topic, content, user_id } = body;
+		const { tone, topic, content, user_id, target_audience, target_reaction } =
+			body;
+
+		console.log("Creating post with body:", body);
 
 		if (!topic || !user_id) {
 			return NextResponse.json(
@@ -63,7 +66,14 @@ export async function POST(request: NextRequest) {
 		const { data, error } = await supabase
 			.from("posts")
 			.insert([
-				{ tone: tone || null, topic, content: content || null, user_id },
+				{
+					tone: tone || null,
+					topic,
+					content: content || null,
+					user_id,
+					target_audience: target_audience || null,
+					target_reaction: target_reaction || null,
+				},
 			])
 			.select()
 			.single();
@@ -92,15 +102,16 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const { id, tone, topic, content } = body;
+
+		const { id, tone, topic, content, target_audience, target_reaction } = body;
 
 		if (!id) {
 			return NextResponse.json({ error: "id is required" }, { status: 400 });
 		}
-
+		console.log("Updating post with body:", body);
 		const { data, error } = await supabase
 			.from("posts")
-			.update({ tone, topic, content })
+			.update({ tone, topic, content, target_audience, target_reaction })
 			.eq("id", id)
 			.select()
 			.single();
