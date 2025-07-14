@@ -1,7 +1,6 @@
 import type { User } from "@supabase/supabase-js";
-import { useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { generateLinkedInPost } from "../lib/cohereClient";
-import SideMenu from "./SideMenu";
 
 interface GeneratedPost {
 	id: string;
@@ -15,10 +14,10 @@ interface GeneratedPost {
 
 interface PostGeneratorProps {
 	user: User;
-	onLogout?: () => void;
+	post?: GeneratedPost;
 }
 
-const PostGenerator: React.FC<PostGeneratorProps> = ({ user, onLogout }) => {
+const PostGenerator: React.FC<PostGeneratorProps> = ({ user, post }) => {
 	const [tone, setTone] = useState("professional");
 	const [target_reaction, setTarget_reaction] = useState("like");
 	const [topic, setTopic] = useState("");
@@ -28,6 +27,19 @@ const PostGenerator: React.FC<PostGeneratorProps> = ({ user, onLogout }) => {
 	const [error, setError] = useState("");
 	const [generatedPosts, setGeneratedPosts] = useState<GeneratedPost[]>([]);
 	const [selectedPostId, setSelectedPostId] = useState<string | undefined>();
+
+	console.log("PostGenerator mounted with post:", post);
+
+	useEffect(() => {
+		if (post) {
+			setSelectedPostId(post.id);
+			setTone(post.tone);
+			setTarget_reaction(post.target_reaction);
+			setTopic(post.topic);
+			setTarget_audience(post.target_audience);
+			setContent(post.content);
+		}
+	}, [post]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -135,83 +147,8 @@ const PostGenerator: React.FC<PostGeneratorProps> = ({ user, onLogout }) => {
 		}
 	};
 
-	const handleSelectPost = (post: GeneratedPost) => {
-		setSelectedPostId(post.id);
-		setContent(post.content || "");
-		setTopic(post.topic);
-		setTone(post.tone);
-		setTarget_reaction(post.target_reaction);
-		setTarget_audience(post.target_audience);
-	};
-
-	const handleDeletePost = async (postId: string) => {
-		try {
-			const response = await fetch(`/api/posts?id=${postId}`, {
-				method: "DELETE",
-			});
-
-			if (!response.ok) {
-				throw new Error("Failed to delete post");
-			}
-
-			// Remove from local state
-			setGeneratedPosts((prev) => prev.filter((post) => post.id !== postId));
-
-			// If the deleted post was selected, clear the selection
-			if (selectedPostId === postId) {
-				setSelectedPostId(undefined);
-				setContent("");
-				setTopic("");
-			}
-		} catch (error) {
-			console.error("Error deleting post:", error);
-			// You could add a toast notification here
-		}
-	};
-
-	const handleUpdatePost = async (post: GeneratedPost) => {
-		try {
-			const response = await fetch("/api/posts", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					id: post.id,
-					tone: post.tone,
-					topic: post.topic,
-					content: post.content,
-					target_audience: post.target_audience,
-					target_reaction: post.target_reaction,
-				}),
-			});
-
-			if (!response.ok) {
-				throw new Error("Failed to update post");
-			}
-
-			const updatedPost = await response.json();
-			setGeneratedPosts((prev) =>
-				prev.map((p) => (p.id === updatedPost.post.id ? updatedPost.post : p))
-			);
-		} catch (error) {
-			console.error("Error updating post:", error);
-			// You could add a toast notification here
-		}
-	};
-
 	return (
 		<div className="h-screen flex overflow-hidden">
-			{/* Side Menu */}
-			<SideMenu
-				user={user}
-				onLogout={onLogout || (() => {})}
-				generatedPosts={generatedPosts}
-				onSelectPost={handleSelectPost}
-				onDeletePost={handleDeletePost}
-				selectedPostId={selectedPostId}
-			/>
-
 			{/* Main Content */}
 			<div className="flex-1 flex flex-col">
 				{/* Form Controls */}

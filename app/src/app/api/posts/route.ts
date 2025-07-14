@@ -137,8 +137,14 @@ export async function PUT(request: NextRequest) {
 //DELETE endpoint - Delete a post
 export async function DELETE(request: NextRequest) {
 	try {
+		console.log("Received DELETE request for posts");
+		console.log("Request URL:", request.url);
+		console.log("Handling DELETE request for posts");
 		const { searchParams } = new URL(request.url);
 		const id = searchParams.get("id");
+		const userId = searchParams.get("user_id");
+		console.log("Post ID to delete:", id);
+		console.log("User ID:", userId);
 
 		if (!id) {
 			return NextResponse.json(
@@ -147,7 +153,11 @@ export async function DELETE(request: NextRequest) {
 			);
 		}
 
-		const { error } = await supabase.from("posts").delete().eq("id", id);
+		const { error } = await supabase
+			.from("posts")
+			.delete()
+			.eq("id", id)
+			.eq("user_id", userId);
 
 		if (error) {
 			console.error("Error deleting post:", error);

@@ -18,46 +18,43 @@ interface SideMenuProps {
 	onSelectPost: (post: GeneratedPost) => void;
 	onDeletePost: (postId: string) => void;
 	selectedPostId?: string;
+	isCollapsed?: boolean;
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({
 	user,
+	generatedPosts,
 	onLogout,
 	onSelectPost,
 	onDeletePost,
 	selectedPostId,
 }) => {
-	const [posts, setPosts] = useState<GeneratedPost[]>([]);
-	const getAllPosts = async (user_id: string): Promise<GeneratedPost[]> => {
+	const [posts, setPosts] = useState<GeneratedPost[]>(generatedPosts);
+
+	const fetchPosts = async () => {
+		if (!user) return;
 		try {
 			const res = await fetch(
-				`/api/posts?user_id=${encodeURIComponent(user_id)}`,
-				{
-					method: "GET",
-					headers: { "Content-Type": "application/json" },
-				}
+				`/api/posts?user_id=${encodeURIComponent(user.id)}`
 			);
-
 			const result = await res.json();
-
-			const posts = result.posts.map((post: any) => ({
+			const formattedPosts = result.posts.map((post: any) => ({
 				...post,
 				created_at: new Date(post.created_at),
 			}));
-
-			return posts;
-		} catch (error) {
-			console.error("Error getting posts:", error);
-			return [];
+			setPosts(formattedPosts);
+		} catch (err) {
+			console.error("Failed to fetch posts", err);
 		}
 	};
 
+	// Call when post is generated
+	const handleNewPostGenerated = async () => {
+		await fetchPosts();
+	};
+
 	useEffect(() => {
-		if (user) {
-			getAllPosts(user.id).then((posts) => {
-				setPosts(posts);
-			});
-		}
+		if (user) fetchPosts();
 	}, [user]);
 
 	return (
